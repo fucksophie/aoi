@@ -1,4 +1,8 @@
+import json
+import discord
 from discord.ext import commands
+
+config = json.load(open("config.json"))
 
 class Core(commands.Cog):
     def __init__(self, client):
@@ -12,13 +16,19 @@ class Core(commands.Cog):
     
     @commands.command()
     async def eval(self, ctx, arg):
-        if ctx.author.id == 384342022955466753:
+        if ctx.author.id == config["owner"]:
             evaled = eval(arg)
 
             if evaled:
                 await ctx.send(f"```{evaled}```")
             else:
                 await ctx.send("None")
-        
+    
+    @commands.command()
+    async def reload(self, ctx, arg):
+        if ctx.author.id == config["owner"]:
+            self.client.reload_extension(arg)
+            await ctx.send(f"Reloaded {arg}")
+
 def setup(client):
     client.add_cog(Core(client))

@@ -11,6 +11,11 @@ client = commands.Bot(command_prefix=config["prefix"])
 client.help_command = commands.MinimalHelpCommand()
 
 @client.event
+async def on_command_error(ctx, error):
+    if not str(error).startswith('Command "'):
+        await ctx.send(error)
+
+@client.event
 async def on_ready():
     print(f"{client.user.name} | Running")
     await client.change_presence(activity=discord.Game(name="with camping equipment | <help"))

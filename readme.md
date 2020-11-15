@@ -7,8 +7,7 @@ Aoi is a extremely basic discord bot made in Discord.py.
 ## Features
 
 1. Images
-2. Minecraft Player information
-3. Moderation
+2. Moderation
 
 ## Credits
 [Artwork](https://www.pixiv.net/en/artworks/67359088) by the amazing [たりょう](https://www.pixiv.net/en/users/17718771)!
