@@ -8,11 +8,15 @@ from discord.ext import commands
 config = json.load(open("config.json"))
 
 class Images(commands.Cog):
+    """ Just completely random images. """
     def __init__(self, client):
         self.client = client
     
     @commands.command()
     async def character(self, ctx, arg=None):
+        """ Random anime character.
+        Usage: character <name>
+        """
         allCharacters = requests.get("https://anime.rovi.me/list").json()["characters"]
 
         if arg in allCharacters:
