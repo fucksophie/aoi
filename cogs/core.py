@@ -64,8 +64,8 @@ class Core(commands.Cog):
         embed.add_field(name="Owner", value=f"<@!{config['owner']}>", inline=True)
         embed.add_field(name="Support Server", value="[Click here](https://discord.gg/aYX3xmTrWp)", inline=True)
         embed.add_field(name="Invite", value=f"[Click here](https://discord.com/api/oauth2/authorize?client_id={self.client.user.id}&permissions=268561478&scope=bot)", inline=True)
-        embed.add_field(name="Source", value="[Click here](https://github.com/lukeacat/aoi/)"
-        embed.add_field(name="free vbox no skem", value="[click](https://www.youtube.com/watch?v=j5a0jTc9S10)")
+        embed.add_field(name="Source", value="[Click here](https://github.com/lukeacat/aoi/)", inline=True)
+        embed.add_field(name="free vbox no skem", value="[click](https://www.youtube.com/watch?v=j5a0jTc9S10)", inline=True)
         await ctx.send(embed=embed)
 
 def setup(client):
