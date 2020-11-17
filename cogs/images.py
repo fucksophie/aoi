@@ -13,6 +13,7 @@ class Images(commands.Cog):
         self.client = client
     
     @commands.command()
+    @commands.isNsfw()
     async def character(self, ctx, arg=None):
         """ Random anime character.
         Usage: character <name>

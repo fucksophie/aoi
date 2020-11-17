@@ -18,7 +18,10 @@ class Mod(commands.Cog):
         """
         try:
             await member.kick()
-            await ctx.send(f"Kicked {member.name}!")
+            
+            embed = discord.Embed()
+
+            await ctx.send(embed=embed)
         except Exception as e:
             await ctx.send(e)
 
