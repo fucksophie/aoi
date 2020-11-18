@@ -19,9 +19,12 @@ class Mod(commands.Cog):
         try:
             await member.kick()
             
-            embed = discord.Embed()
-
+            embed = discord.Embed(
+                title="Member kicked!",
+                description=f"<@!{ctx.author.id}> has kicked <@!{member.id}>!")
+            
             await ctx.send(embed=embed)
+
         except Exception as e:
             await ctx.send(e)
 
@@ -33,7 +36,12 @@ class Mod(commands.Cog):
         """
         try:
             await member.ban()
-            await ctx.send(f"Banned {member.name}!")
+            
+            embed = discord.Embed(
+                title="Member banned!",
+                description=f"<@!{ctx.author.id}> has banned <@!{member.id}>!")
+            
+            await ctx.send(embed=embed)
         except Exception as e:
             await ctx.send(e)
 
@@ -41,13 +49,38 @@ class Mod(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, purge: int):
         """ Purge a bunch of messages
-        Usage: purge <number>"""
+        Usage: purge <number>
+        """
         try:
             await ctx.channel.purge(limit=purge+1)
-            await ctx.send(f"Deleted {purge} messages!")
+            embed = discord.Embed(
+                title="Purged!",
+                description=f"Purged {purge} messages!")
+            
+            await ctx.send(embed=embed, delete_after=3)
         except Exception as e:
             await ctx.send(e)
-    
+   
+    @commands.command()
+    @commands.has_permissions(kick_members=True)
+    async def warn(self, ctx, member: discord.Member, *, reason):
+        """ Warn a user
+        Usage: warn <member> <reason>
+        """
+
+        embed = discord.Embed(
+            title=f"You've been warned.",
+            description=f"For `{reason}` in {ctx.guild.name}"
+        )
+        
+        await member.send(embed=embed)
+
+        embed = discord.Embed(title=f"Warned {member.name}!")
+        
+        await ctx.send(embed=embed)
+        
+
+    @warn.error
     @purge.error
     @ban.error
     @kick.error
