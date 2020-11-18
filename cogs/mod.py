@@ -63,14 +63,14 @@ class Mod(commands.Cog):
    
     @commands.command()
     @commands.has_permissions(kick_members=True)
-    async def warn(self, ctx, member: discord.Member, *, reason: str):
+    async def warn(self, ctx, member: discord.Member, *, reason):
         """ Warn a user
         Usage: warn <member> <reason>
         """
 
         embed = discord.Embed(
-            title=f"You've been warned for `{reason}`.",
-            description=f"in {ctx.guild.name}"
+            title=f"You've been warned.",
+            description=f"For `{reason}` in {ctx.guild.name}"
         )
         
         await member.send(embed=embed)
