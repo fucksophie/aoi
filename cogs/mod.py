@@ -45,7 +45,7 @@ class Mod(commands.Cog):
         except Exception as e:
             await ctx.send(e)
 
-    @commands.command()
+    @commands.command(aliases=["snap"])
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, purge: int):
         """ Purge a bunch of messages
