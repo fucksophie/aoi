@@ -14,37 +14,38 @@ class Levels(commands.Cog):
         
     @commands.Cog.listener()
     async def on_message(self, ctx):
-        con = sqlite3.connect("users.sqlite")
-        cur = con.cursor()
+        if ctx.guild.id != 776217501456662589:
+            con = sqlite3.connect("users.sqlite")
+            cur = con.cursor()
+ 
+            cur.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER, level INTEGER, xp INTEGER, time INTEGER)")
 
-        cur.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER, level INTEGER, xp INTEGER, time INTEGER)")
-
-        cur.execute(f"SELECT * FROM users WHERE id = {ctx.author.id}") 
-        user = cur.fetchone()
+            cur.execute(f"SELECT * FROM users WHERE id = {ctx.author.id}") 
+            user = cur.fetchone()
         
-        if user:
-            user = list(user)
+            if user:
+                user = list(user)
             
-            if int(time.time()) > user[3] + 60:
-                lvl = levels.xpToLevel(user[2])
+                if int(time.time()) > user[3] + 60:
+                    lvl = levels.xpToLevel(user[2])
 
-                user[2] += random.randint(15, 25)
+                    user[2] += random.randint(15, 25)
 
-                new_lvl = levels.xpToLevel(user[2])
+                    new_lvl = levels.xpToLevel(user[2])
 
-                if new_lvl != lvl:
-                    user[1] = new_lvl
+                    if new_lvl != lvl:
+                        user[1] = new_lvl
 
-                    await ctx.channel.send(f"LEVEL UP! You're now at level {user[1]}!", delete_after=10)
+                        await ctx.channel.send(f"LEVEL UP! You're now at level {user[1]}!", delete_after=10)
         
-                cur.execute(f"UPDATE users SET xp = {user[2]}, level = {user[1]}, time = {int(time.time())} WHERE id = {ctx.author.id}")
-        else:
-            if not ctx.author.bot:
-                cur.execute(f"INSERT INTO users VALUES ({ctx.author.id}, 1, 1, {int(time.time())})")
+                    cur.execute(f"UPDATE users SET xp = {user[2]}, level = {user[1]}, time = {int(time.time())} WHERE id = {ctx.author.id}")
+            else:
+                if not ctx.author.bot:
+                    cur.execute(f"INSERT INTO users VALUES ({ctx.author.id}, 1, 1, {int(time.time())})")
         
-        con.commit()
-        cur.close()
-        con.close()
+            con.commit()
+            cur.close()
+            con.close()
 
     @commands.command()
     async def profile(self, ctx):
