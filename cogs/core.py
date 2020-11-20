@@ -7,10 +7,9 @@ config = json.load(open("config.json"))
 
 class Core(commands.Cog):
     """ Main commands of the bot """
-
     def __init__(self, client):
         self.client = client
-
+        
     @commands.command(aliases=["ms"])
     async def ping(self, ctx):
         """ Latency of the bot """

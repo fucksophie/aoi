@@ -3,4 +3,4 @@ lib/
 .vscode/
 __pycache__
 config.json
-db.shelve
+users.sqlite

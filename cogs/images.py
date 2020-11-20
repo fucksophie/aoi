@@ -2,6 +2,7 @@ import json
 import requests
 import discord
 import sys
+import random
 
 from discord.ext import commands
 
@@ -11,40 +12,49 @@ class Images(commands.Cog):
     """ Just completely random images. """
     def __init__(self, client):
         self.client = client
+
+    @commands.command()
+    async def xkcd(self, ctx, num: int=None):
+        """ Funny nerd comics. 
+        Usage: xkcd [num]
+        """
+        latestComic = requests.get("https://xkcd.com/info.0.json").json()["num"]
+              
+        if not num:
+            comic = requests.get(f"https://xkcd.com/{random.randint(1, latestComic)}/info.0.json").json()
+
+            embed = discord.Embed(title=f"{comic['safe_title']} (R {comic['num']})", description=comic['alt'])
+            embed.set_image(url=comic["img"])
+                
+            await ctx.send(embed=embed)
+        else:
+            if num >= 1 and num <= latestComic:
+
+                comic = requests.get(f"https://xkcd.com/{num}/info.0.json").json()
+                
+                embed = discord.Embed(title=f"{comic['safe_title']} ({num})", description=comic['alt'])
+                embed.set_image(url=comic["img"])
+                
+                await ctx.send(embed=embed)
+            else:
+                await ctx.send(f"Number is either less than 1, or higher than {latestComic}.")
     
     @commands.command()
-    async def character(self, ctx, arg=None):
-        """ Random anime character.
-        Usage: character <name>
+    async def images(self, ctx, arg=None):
+        """ Random wacky images.
+        Usage: images [image]
         """
-        allCharacters = requests.get("https://anime.rovi.me/list").json()["characters"]
+        allImages = requests.get("https://api.chewey-bot.top/endpoints").json()["data"]
 
-        if arg in allCharacters:
-                character = requests.get(f"https://anime.rovi.me/random?character={arg}").json()
-                
-                embed = discord.Embed()
-                embed.set_image(url=character["url"])
+        if arg in allImages:
+            data = requests.get(f"https://api.chewey-bot.top/{arg}?auth={config['chewey']}").json()
 
-                await ctx.send(embed=embed)
+            embed = discord.Embed()
+            embed.set_image(url=data["data"])
+
+            await ctx.send(embed=embed)
         else:
-            await ctx.send(f"List of allowed characters: {', '.join(allCharacters)}.")
-
+            await ctx.send(f"List of allowed images: {', '.join(allImages)}.")
 
 def setup(client):
-    apiList = requests.get("https://api.chewey-bot.top/endpoints").json()["data"]
-    cog = Images(client)
-    
-    for name in apiList:
-        @commands.command(name=name)
-        async def temp(self, ctx):
-                data = requests.get(f"https://api.chewey-bot.top/{ctx.command.name}?auth={config['chewey']}").json()
-                embed = discord.Embed()
-                embed.set_image(url=data["data"])
-
-                await ctx.send(embed=embed)
-
-        temp.cog = cog
-
-        client.add_command(temp)
-
-    client.add_cog(cog)
+    client.add_cog(Images(client))
