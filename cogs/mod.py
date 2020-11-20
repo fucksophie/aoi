@@ -1,9 +1,6 @@
-import json
 import discord
 
 from discord.ext import commands
-
-config = json.load(open("config.json"))
 
 class Mod(commands.Cog):
     """ Simple moderation commands, in most bots """
