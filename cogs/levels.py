@@ -74,7 +74,7 @@ class Levels(commands.Cog):
         con = sqlite3.connect("users.sqlite")
         cur = con.cursor()
         
-        cur.execute(f"SELECT * FROM users ORDER BY level;") 
+        cur.execute(f"SELECT * FROM users ORDER BY xp DESC LIMIT 10;") 
         leaderboard = list(cur.fetchall())
         embed = discord.Embed()
         
